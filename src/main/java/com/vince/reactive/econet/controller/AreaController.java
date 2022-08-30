@@ -16,7 +16,7 @@ public class AreaController {
     @Autowired
     private AreaService areaService;
 
-    @GetMapping
+    @GetMapping("/areas")
     public Flux<AreaDto> getAllAreas(){
         return areaService.getAllAreas();
     }

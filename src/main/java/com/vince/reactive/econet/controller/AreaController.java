@@ -4,10 +4,9 @@ package com.vince.reactive.econet.controller;
 import com.vince.reactive.econet.dto.AreaDto;
 import com.vince.reactive.econet.service.AreaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/v1/econet")
@@ -20,4 +19,27 @@ public class AreaController {
     public Flux<AreaDto> getAllAreas(){
         return areaService.getAllAreas();
     }
+
+    @GetMapping("/areas{areaId}")
+    public Mono<AreaDto> getAreaById(@PathVariable String areaId){
+        return areaService.getAreaById(areaId);
+    }
+
+
+    @PostMapping
+    public Mono<AreaDto> saveArea(@RequestBody Mono<AreaDto> areaDtoMono){
+        return areaService.saveArea(areaDtoMono);
+    }
+
+    @PutMapping("/area/{areaId}")
+    public Mono<AreaDto> updateArea(@RequestBody Mono<AreaDto> areaDtoMono, @PathVariable String areaId){
+        return areaService.updateArea(areaDtoMono, areaId);
+    }
+
+    @DeleteMapping
+    public Mono<Void> deleteArea(@PathVariable String areaId){
+        return areaService.deleteArea(areaId);
+    }
+
+
 }

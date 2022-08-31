@@ -4,8 +4,9 @@ import com.vince.reactive.econet.model.Shop;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 import reactor.core.publisher.Flux;
+
+import java.util.List;
 
 
 @Data
@@ -15,5 +16,5 @@ public class AreaDto {
 
     private String areaId;
     private String areaName;
-    private Flux<Shop> shopFlux;
+    private List<Shop> shops;
 }

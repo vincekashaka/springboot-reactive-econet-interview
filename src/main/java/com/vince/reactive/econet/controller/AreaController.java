@@ -2,8 +2,11 @@ package com.vince.reactive.econet.controller;
 
 
 import com.vince.reactive.econet.dto.AreaDto;
+import com.vince.reactive.econet.model.Area;
 import com.vince.reactive.econet.service.AreaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,21 +21,24 @@ public class AreaController {
     private AreaService areaService;
 
     @GetMapping("/areas")
+
     public Flux<AreaDto> getAllAreas(){
         return areaService.getAllAreas();
     }
 
     @GetMapping("/{areaId}")
-    public Mono<AreaDto> getAreaById(@PathVariable String areaId){
-        return areaService.getAreaById(areaId);
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Mono<AreaDto>> getAreaById(@PathVariable("areaId") String areaId){
+        Mono<AreaDto> areaDtoMono = areaService.getAreaById(areaId);
+        HttpStatus status = (areaDtoMono != null) ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+        return new ResponseEntity<>(areaDtoMono, status);
     }
 
 
     @PostMapping
-    public Mono<AreaDto> saveArea(
-            @Valid
-            @RequestBody Mono<AreaDto> areaDtoMono){
-        return areaService.saveArea(areaDtoMono);
+   @ResponseStatus(HttpStatus.CREATED)
+    public Mono<AreaDto> saveArea(@Valid @RequestBody Mono<AreaDto> areaDtoMono){
+        return   areaService.saveArea(areaDtoMono);
     }
 
     @PutMapping("/area/{areaId}")
